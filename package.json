@@ -1,0 +1,26 @@
+{
+  "name": "green-tech-api",
+  "version": "1.0.0",
+  "description": "Marketplace system for family farmers",
+  "homepage": "https://github.com/JoseHenrique1/green-tech-api#readme",
+  "bugs": {
+    "url": "https://github.com/JoseHenrique1/green-tech-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoseHenrique1/green-tech-api.git"
+  },
+  "license": "ISC",
+  "author": "Jose Henrique, Gustavo Pereira e Islan Pereira",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
