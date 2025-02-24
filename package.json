@@ -19,9 +19,13 @@
     "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
+    "@prisma/client": "^6.4.0",
+    "bcrypt": "^5.1.1",
     "express": "^4.21.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.4",
     "prisma": "^6.4.0",

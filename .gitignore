@@ -2,3 +2,5 @@
 
 /prisma/*.db
 /prisma/*.db-journal
+
+biome.json

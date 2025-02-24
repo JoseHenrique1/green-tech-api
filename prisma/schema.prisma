@@ -10,10 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id    String     @id @default(uuid())
-  email String  @unique
-  name  String
+  id       String @id @default(uuid())
+  email    String @unique
+  name     String
   password String
+}
+
+model Agricultor {
+  id           String   @id @default(uuid())
+  imagem       String?
+  nome         String
+  email        String   @unique
+  telefone     String   @unique
+  senha        String
+  tamanho      Float
+  latitude     String
+  longitude     String
+  tiposCultivo String
 }
