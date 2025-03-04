@@ -43,7 +43,9 @@ export const cadastrarAgricultor = async (req: Request, res: Response) => {
 };
 
 export const consultarAgricultorPorEmail = async (req: Request, res: Response) => {
-  const { email } = req.query;
+  const { email } = req.params
+  console.log(JSON.stringify(req.params, null, 2));
+  
 
   if (!email || typeof email !== "string") {
     return res.status(400).json({ message: "O email é obrigatório e deve ser uma string." });
