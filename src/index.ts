@@ -10,8 +10,8 @@ app.use("/", agricultorRouter);
 app.use("/estabelecimento", estabelecimentoRouter);
 app.use("/produto", produtoRouter);
 
-app.get("/", (req, res) => {
-	res.json({ msg: "deu certo" });
-});
+// app.get("/", (req, res) => {
+// 	res.json({ msg: "deu certo" });
+// });
 
 app.listen(3000, () => console.log("Server running on port 3000"));

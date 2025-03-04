@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { cadastrarEstabelecimento, consultarEstabelecimento, consultarEstabelecimentoPorId,
+import { cadastrarEstabelecimento, consultarEstabelecimentos, consultarEstabelecimentoPorId, consultarEstabelecimentoPorNome,
      atualizarEstabelecimento, excluirEstabelecimento} from '../controllers/estabelecimento.controller.js';
 
 export const estabelecimentoRouter = Router();
@@ -8,7 +8,8 @@ export const estabelecimentoRouter = Router();
 
 estabelecimentoRouter.post('/', cadastrarEstabelecimento);
 estabelecimentoRouter.get('/:id', consultarEstabelecimentoPorId);
-estabelecimentoRouter.get('/', consultarEstabelecimento);
+estabelecimentoRouter.get('/pesquisar/:id', consultarEstabelecimentoPorNome);
+estabelecimentoRouter.get('/', consultarEstabelecimentos);
 estabelecimentoRouter.put('/:id', atualizarEstabelecimento);
 estabelecimentoRouter.delete('/:id', excluirEstabelecimento);
 
