@@ -7,7 +7,8 @@ export const cadastrarAgricultor = async (req: Request, res: Response) => {
     const { nome, email, telefone, senha, tamanho, latitude, longitude, tiposCultivo } = req.body;
 
     if (!nome || !email || !telefone || !senha || !tamanho || !latitude || !longitude || !tiposCultivo) {
-      return res.status(400).json({ msg: "Todos os campos são obrigatórios" });
+      res.status(400).json({ msg: "Todos os campos são obrigatórios" });
+      return
     }
 
     const agricultorExistente = await prisma.agricultor.findUnique({
@@ -17,7 +18,8 @@ export const cadastrarAgricultor = async (req: Request, res: Response) => {
     });
 
     if (agricultorExistente) {
-      return res.status(400).json({ msg: "Já existe um agricultor com esse email" });
+      res.status(400).json({ msg: "Já existe um agricultor com esse email" });
+      return
     }
 
     const senhaHash = await hashPassword(senha);
@@ -35,10 +37,12 @@ export const cadastrarAgricultor = async (req: Request, res: Response) => {
       },
     });
 
-    return res.status(201).json({ msg: "Agricultor cadastrado com sucesso", agricultor });
+    res.status(201).json({ msg: "Agricultor cadastrado com sucesso", agricultor });
+    return;
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ msg: "Erro ao cadastrar agricultor" });
+    res.status(500).json({ msg: "Erro ao cadastrar agricultor" });
+    return;
   }
 };
 
@@ -48,7 +52,8 @@ export const consultarAgricultorPorEmail = async (req: Request, res: Response) =
   
 
   if (!email || typeof email !== "string") {
-    return res.status(400).json({ message: "O email é obrigatório e deve ser uma string." });
+    res.status(400).json({ message: "O email é obrigatório e deve ser uma string." });
+    return;
   }
 
   try {
@@ -57,13 +62,16 @@ export const consultarAgricultorPorEmail = async (req: Request, res: Response) =
     });
 
     if (!agricultor) {
-      return res.status(404).json({ message: "Agricultor não encontrado." });
+      res.status(404).json({ message: "Agricultor não encontrado." });
+      return;
     }
 
-    return res.status(200).json(agricultor);
+    res.status(200).json(agricultor);
+    return;
   } catch (error) {
     console.error("Erro ao consultar agricultor por email:", error);
-    return res.status(500).json({ message: "Erro interno ao consultar agricultor." });
+    res.status(500).json({ message: "Erro interno ao consultar agricultor." });
+    return;
   }
 };
 
@@ -73,7 +81,8 @@ export const atualizarAgricultor = async (req: Request, res: Response) => {
   const { imagem, nome, email, telefone, senha, tamanho, latitude, longitude, tiposCultivo } = req.body;
 
   if (!id) {
-    return res.status(400).json({ message: "ID do agricultor é obrigatório." });
+    res.status(400).json({ message: "ID do agricultor é obrigatório." });
+    return;
   }
 
   try {
@@ -91,10 +100,12 @@ export const atualizarAgricultor = async (req: Request, res: Response) => {
       }
     });
 
-    return res.status(200).json(agricultorAtualizado);
+    res.status(200).json(agricultorAtualizado);
+    return;
   } catch (error) {
     console.error("Erro ao atualizar agricultor:", error);
-    return res.status(500).json({ message: "Erro interno ao atualizar agricultor." });
+    res.status(500).json({ message: "Erro interno ao atualizar agricultor." });
+    return;
   }
 };
 
