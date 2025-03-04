@@ -70,9 +70,48 @@ export const consultarEstabelecimentoPorNome = async (req: Request, res: Respons
 }
 
 export const atualizarEstabelecimento = async (req: Request, res: Response) => {
-    
+    try {
+        const { email, telefone, imagem, nome, latitude, longitude } = req.body;
+
+        const novoEstalecimento = await prisma.estabelecimento.update({
+            where: {
+                id: String(req.params.id)
+            },
+            data: {    
+                email,    
+                telefone, 
+                imagem,   
+                nome,       
+                latitude, 
+                longitude 
+            },
+        });
+        res.status(201).json({ "message": "Estabelecimento atualizado com sucesso!", novoEstalecimento});
+    } catch (error) {
+        res.status(500).json({ error: "Erro do servidor"});
+    }
 }
 
 export const excluirEstabelecimento = async (req: Request, res: Response) => {
-    
+    try {
+        const estabelecimento = await prisma.estabelecimento.findUnique({
+            where: {
+                id: String(req.params.id),
+            }
+        });
+
+        if (estabelecimento != null) {
+            await prisma.estabelecimento.delete({
+                where: {
+                    id: String(req.params.id),
+                }
+            });
+            res.status(200).json({ "message": "Estabelecimento excluido" });
+        } else {
+            res.status(404).json({ "message": "Estabelecimento não encontrado" });
+        }
+
+    } catch (error) {
+        res.status(500).json({ error: "Erro do servidor"});
+    }
 }
