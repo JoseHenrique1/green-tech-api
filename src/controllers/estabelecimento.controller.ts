@@ -37,12 +37,12 @@ export const consultarEstabelecimentos = async (req: Request, res: Response) => 
 
 export const consultarEstabelecimentoPorId = async (req: Request, res: Response) => {
     try {
-        const estabelecimento = await prisma.estabelecimento.findMany({
+        const estabelecimento = await prisma.estabelecimento.findUnique({
             where: {
                 id: String(req.params.id)
             }
         });
-        if (estabelecimento.length > 0) {
+        if (estabelecimento) {
             res.status(200).json(estabelecimento);
         } else {
             res.status(404).json({ "message": "estabelecimento não encontrado!" });
