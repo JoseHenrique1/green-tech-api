@@ -4,6 +4,8 @@ import { cadastrarEstabelecimento, consultarEstabelecimento, consultarEstabeleci
 
 const router = Router();
 
+// falta middleware da autenticação
+
 router.post('/', cadastrarEstabelecimento);
 router.get('/:id', consultarEstabelecimentoPorId);
 router.get('/', consultarEstabelecimento);
