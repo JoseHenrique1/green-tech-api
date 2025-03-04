@@ -52,15 +52,32 @@ export const listarProdutoPorId = async (req: Request, res: Response) => {
     }
 }
 
-export const listarProdutoPorAgricultor = async (req: Request, res: Response) => {
+export const listarProdutosPorAgricultor = async (req: Request, res: Response) => {
     try {
-        const produto = await prisma.produto.findMany({
+        const produtos = await prisma.produto.findMany({
             where: {
                 agricultorId: String(req.params.id)
             }
         });
-        if (produto) {
-            res.status(200).json(produto);
+        if (produtos.length > 0) {
+            res.status(200).json(produtos);
+        } else {
+            res.status(404).json({ "message": "Produto não encontrado" });
+        }
+    } catch (error) {
+        res.status(500).json({ error: "Erro do servidor"});
+    }
+}
+
+export const listarProdutosPorNome = async (req: Request, res: Response) => {
+    try {
+        const produtos = await prisma.produto.findMany({
+            where: {
+                nome: String(req.params.nome)
+            }
+        });
+        if (produtos.length > 0) {
+            res.status(200).json(produtos);
         } else {
             res.status(404).json({ "message": "Produto não encontrado" });
         }
@@ -70,7 +87,26 @@ export const listarProdutoPorAgricultor = async (req: Request, res: Response) =>
 }
 
 export const atualizarProduto = async (req: Request, res: Response) => {
+    try {
+        const { nome, imagem, preco, disponibilidade, certificacoes, quantidade } = req.body;
 
+        const produtoAtualizado = await prisma.produto.update({
+            where: {
+                id: String(req.params.id)
+            },
+            data: {    
+                nome, 
+                imagem, 
+                preco, 
+                disponibilidade, 
+                certificacoes, 
+                quantidade
+            },
+        });
+        res.status(201).json({ "message": "Produto atualizado com sucesso!", produtoAtualizado});
+    } catch (error) {
+        res.status(500).json({ error: "Erro do servidor"});
+    }
 }
 
 export const deletarProduto = async (req: Request, res: Response) => {

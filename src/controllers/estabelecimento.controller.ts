@@ -73,7 +73,7 @@ export const atualizarEstabelecimento = async (req: Request, res: Response) => {
     try {
         const { email, telefone, imagem, nome, latitude, longitude } = req.body;
 
-        const novoEstalecimento = await prisma.estabelecimento.update({
+        const estalecimentoAtualizado = await prisma.estabelecimento.update({
             where: {
                 id: String(req.params.id)
             },
@@ -86,7 +86,7 @@ export const atualizarEstabelecimento = async (req: Request, res: Response) => {
                 longitude 
             },
         });
-        res.status(201).json({ "message": "Estabelecimento atualizado com sucesso!", novoEstalecimento});
+        res.status(201).json({ "message": "Estabelecimento atualizado com sucesso!", estalecimentoAtualizado});
     } catch (error) {
         res.status(500).json({ error: "Erro do servidor"});
     }
