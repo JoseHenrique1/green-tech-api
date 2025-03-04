@@ -2,14 +2,13 @@ import { Router } from 'express';
 import { cadastrarProduto, atualizarProduto, listarProdutoPorId,
      listarProdutos, deletarProduto } from '../controllers/produto.controller.js';
 
-const router = Router();
+export const produtoRouter = Router();
 
 // falta middleware da autenticação
 
-router.post('/', cadastrarProduto);
-router.get('/:id', listarProdutoPorId);
-router.get('/', listarProdutos);
-router.put('/:id', atualizarProduto);
-router.delete('/:id', deletarProduto);
+produtoRouter.post('/', cadastrarProduto);
+produtoRouter.get('/:id', listarProdutoPorId);
+produtoRouter.get('/', listarProdutos);
+produtoRouter.put('/:id', atualizarProduto);
+produtoRouter.delete('/:id', deletarProduto);
 
-export default router;

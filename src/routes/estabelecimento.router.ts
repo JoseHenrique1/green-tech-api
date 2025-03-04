@@ -2,14 +2,13 @@ import { Router } from 'express';
 import { cadastrarEstabelecimento, consultarEstabelecimento, consultarEstabelecimentoPorId,
      atualizarEstabelecimento, excluirEstabelecimento} from '../controllers/estabelecimento.controller.js';
 
-const router = Router();
+export const estabelecimentoRouter = Router();
 
 // falta middleware da autenticação
 
-router.post('/', cadastrarEstabelecimento);
-router.get('/:id', consultarEstabelecimentoPorId);
-router.get('/', consultarEstabelecimento);
-router.put('/:id', atualizarEstabelecimento);
-router.delete('/:id', excluirEstabelecimento);
+estabelecimentoRouter.post('/', cadastrarEstabelecimento);
+estabelecimentoRouter.get('/:id', consultarEstabelecimentoPorId);
+estabelecimentoRouter.get('/', consultarEstabelecimento);
+estabelecimentoRouter.put('/:id', atualizarEstabelecimento);
+estabelecimentoRouter.delete('/:id', excluirEstabelecimento);
 
-export default router;
