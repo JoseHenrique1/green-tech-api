@@ -26,6 +26,30 @@ model Agricultor {
   senha        String
   tamanho      Float
   latitude     String
-  longitude     String
+  longitude    String
   tiposCultivo String
+  produtos     Produto[]
+}
+
+model Estabelecimento {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  telefone     String   @unique
+  imagem       String?
+  nome         String
+  senha        String
+  latitude     String
+  longitude    String
+}
+
+model Produto {
+  id               String   @id @default(uuid())
+  imagem           String?
+  nome             String
+  preco            Float
+  disponibilidade  String
+  certificacoes    String
+  quantidade       Int
+  agricultorId     String
+  agricultor       Agricultor @relation(fields: [agricultorId], references: [id]) 
 }
