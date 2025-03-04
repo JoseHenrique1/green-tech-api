@@ -1,14 +1,10 @@
 import express from "express";
-import { agricultorRouter } from "./routes/agricultor.router.js";
-import { estabelecimentoRouter } from "./routes/estabelecimento.router.js";
-import { produtoRouter } from "./routes/produto.router.js";
+import { router } from "./routes/index.js";
 
 const app = express();
 app.use(express.json());
 
-app.use("/", agricultorRouter);
-app.use("/estabelecimento", estabelecimentoRouter);
-app.use("/produto", produtoRouter);
+app.use("/", router);
 
 // app.get("/", (req, res) => {
 // 	res.json({ msg: "deu certo" });
