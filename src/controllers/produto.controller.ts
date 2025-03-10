@@ -71,9 +71,18 @@ export const listarProdutosPorAgricultor = async (req: Request, res: Response) =
 
 export const listarProdutosPorNome = async (req: Request, res: Response) => {
     try {
+        const nomeBusca = req.params.nome;
+
+        if (!nomeBusca) {
+            res.status(400).json({ message: "O parâmetro 'nome' é obrigatório" });
+            return;
+        }
+
         const produtos = await prisma.produto.findMany({
             where: {
-                nome: String(req.params.nome)
+                nome: {
+                    contains: nomeBusca, 
+                }
             }
         });
         if (produtos.length > 0) {
