@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { prisma } from "../database/prisma.js";
+import path from "path";
 
 export const cadastrarProduto = async (req: Request, res: Response) => {
     try {
-        const { nome, imagem, preco, disponibilidade, certificacoes, quantidade, agricultorId } = req.body;
+        const { nome, preco, disponibilidade, certificacoes, quantidade, agricultorId } = req.body;
 
         const novoProduto = await prisma.produto.create({
             data: {
-                imagem,
                 nome,
                 preco,
                 disponibilidade,
@@ -97,7 +97,7 @@ export const listarProdutosPorNome = async (req: Request, res: Response) => {
 
 export const atualizarProduto = async (req: Request, res: Response) => {
     try {
-        const { nome, imagem, preco, disponibilidade, certificacoes, quantidade } = req.body;
+        const { nome, preco, disponibilidade, certificacoes, quantidade } = req.body;
 
         const produtoAtualizado = await prisma.produto.update({
             where: {
@@ -105,7 +105,6 @@ export const atualizarProduto = async (req: Request, res: Response) => {
             },
             data: {    
                 nome, 
-                imagem, 
                 preco, 
                 disponibilidade, 
                 certificacoes, 
@@ -141,3 +140,29 @@ export const deletarProduto = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Erro do servidor"});
     }
 }
+
+export const uploadImagemProduto = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    console.log(req.body);
+    
+    if (!req.file) {
+      res.status(400).json({ msg: "Nenhum arquivo enviado." });
+      return;
+    }
+
+    const filePath = path.join("/upload", req.file.filename);
+
+    const produtoAtualizado = await prisma.produto.update({
+      where: { id },
+      data: { imagem: filePath }
+    });
+
+    res.status(200).json({ msg: "Imagem enviada com sucesso!", produto: produtoAtualizado });
+    return
+  } catch (error) {
+    console.error("Erro ao fazer upload da imagem:", error);
+    res.status(501).json({ msg: "Erro interno ao fazer upload da imagem." });
+    return;
+  }
+};
