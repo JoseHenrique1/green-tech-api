@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../database/prisma.js";
+import upload from "../middlewares/multerConfig.ts";
 
 export const cadastrarEstabelecimento = async (req: Request, res: Response) => {
     try {
@@ -54,20 +55,31 @@ export const consultarEstabelecimentoPorId = async (req: Request, res: Response)
 
 export const consultarEstabelecimentoPorNome = async (req: Request, res: Response) => {
     try {
-        const estabelecimento = await prisma.estabelecimento.findMany({
+        const nomeBusca = req.params.nome;
+
+        if (!nomeBusca) {
+            res.status(400).json({ message: "O parâmetro 'nome' é obrigatório" });
+            return;
+        }
+
+        const estabelecimentos = await prisma.estabelecimento.findMany({
             where: {
-                id: String(req.params.nome)
+                nome: {
+                    contains: nomeBusca, 
+                }
             }
         });
-        if (estabelecimento.length > 0) {
-            res.status(200).json(estabelecimento);
+
+        if (estabelecimentos.length > 0) {
+            res.status(200).json(estabelecimentos);
         } else {
-            res.status(404).json({ "message": "estabelecimento não encontrado!" });
+            res.status(404).json({ message: "Nenhum estabelecimento encontrado!" });
         }
     } catch (error) {
-        res.status(500).json({ error: "Erro do servidor"});
+        console.error("Erro ao consultar estabelecimento:", error);
+        res.status(500).json({ error: "Erro do servidor" });
     }
-}
+};
 
 export const atualizarEstabelecimento = async (req: Request, res: Response) => {
     try {

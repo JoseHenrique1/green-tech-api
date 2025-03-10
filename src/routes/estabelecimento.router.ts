@@ -9,7 +9,7 @@ export const estabelecimentoRouter = Router();
 
 estabelecimentoRouter.post('/', verificarCamposEstabelecimento, cadastrarEstabelecimento);
 estabelecimentoRouter.get('/:id', consultarEstabelecimentoPorId);
-estabelecimentoRouter.get('/pesquisar/:id', consultarEstabelecimentoPorNome);
+estabelecimentoRouter.get('/pesquisar/:nome', consultarEstabelecimentoPorNome);
 estabelecimentoRouter.get('/', consultarEstabelecimentos);
 estabelecimentoRouter.put('/:id', verificarCamposEstabelecimentoAtualizacao, atualizarEstabelecimento);
 estabelecimentoRouter.delete('/:id', excluirEstabelecimento);
