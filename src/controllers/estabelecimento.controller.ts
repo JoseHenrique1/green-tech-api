@@ -25,8 +25,13 @@ export const cadastrarEstabelecimento = async (req: Request, res: Response) => {
 
 export const consultarEstabelecimentos = async (req: Request, res: Response) => {
     try {
-        const estabelecimentos = await prisma.estabelecimento.findMany();
-        if (estabelecimentos.length > 0) {
+        const nome = typeof req.query.nome === 'string' ? req.query.nome : undefined;
+
+        const whereClause = nome ? { nome: { contains: nome} } : {};
+
+        const estabelecimentos = await prisma.estabelecimento.findMany({ where: whereClause });
+
+        if (estabelecimentos) {
             res.status(200).json(estabelecimentos);
         } else {
             res.status(404).json({ "message": "Sem estabelecimentos cadastrados!" });
@@ -53,33 +58,6 @@ export const consultarEstabelecimentoPorId = async (req: Request, res: Response)
     }
 }
 
-export const consultarEstabelecimentoPorNome = async (req: Request, res: Response) => {
-    try {
-        const nomeBusca = req.params.nome;
-
-        if (!nomeBusca) {
-            res.status(400).json({ message: "O parâmetro 'nome' é obrigatório" });
-            return;
-        }
-
-        const estabelecimentos = await prisma.estabelecimento.findMany({
-            where: {
-                nome: {
-                    contains: nomeBusca, 
-                }
-            }
-        });
-
-        if (estabelecimentos.length > 0) {
-            res.status(200).json(estabelecimentos);
-        } else {
-            res.status(404).json({ message: "Nenhum estabelecimento encontrado!" });
-        }
-    } catch (error) {
-        console.error("Erro ao consultar estabelecimento:", error);
-        res.status(500).json({ error: "Erro do servidor" });
-    }
-};
 
 export const atualizarEstabelecimento = async (req: Request, res: Response) => {
     try {

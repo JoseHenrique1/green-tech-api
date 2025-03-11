@@ -24,16 +24,21 @@ export const cadastrarProduto = async (req: Request, res: Response) => {
 
 export const listarProdutos = async (req: Request, res: Response) => {
     try {
-        const produtos = await prisma.produto.findMany();
-        if (produtos.length > 0) {
+        const nome = typeof req.query.nome === 'string' ? req.query.nome : undefined;
+
+        const whereClause = nome ? { nome: { contains: nome} } : {};
+
+        const produtos = await prisma.produto.findMany({ where: whereClause });
+
+        if (produtos) {
             res.status(200).json(produtos);
         } else {
-            res.status(404).json({ "message": "Sem produtos cadastrados!" });
+            res.status(404).json({ "message": "Nenhum produto encontrado!" });
         }
     } catch (error) {
-        res.status(500).json({ error: "Erro do servidor"});
+        res.status(500).json({ error: "Erro do servidor" });
     }
-}
+};
 
 export const listarProdutoPorId = async (req: Request, res: Response) => {
     try {
@@ -51,49 +56,26 @@ export const listarProdutoPorId = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Erro do servidor"});
     }
 }
+// Não é interessante estar em produto
 
-export const listarProdutosPorAgricultor = async (req: Request, res: Response) => {
-    try {
-        const produtos = await prisma.produto.findMany({
-            where: {
-                agricultorId: String(req.params.id)
-            }
-        });
-        if (produtos.length > 0) {
-            res.status(200).json(produtos);
-        } else {
-            res.status(404).json({ "message": "Produto não encontrado" });
-        }
-    } catch (error) {
-        res.status(500).json({ error: "Erro do servidor"});
-    }
-}
+// export const listarProdutosPorAgricultor = async (req: Request, res: Response) => {
+//     try {
+//         const produtos = await prisma.produto.findMany({
+//             where: {
+//                 agricultorId: String(req.params.id)
+//             }
+//         });
+//         if (produtos.length > 0) {
+//             res.status(200).json(produtos);
+//         } else {
+//             res.status(404).json({ "message": "Produto não encontrado" });
+//         }
+//     } catch (error) {
+//         res.status(500).json({ error: "Erro do servidor"});
+//     }
+// }
 
-export const listarProdutosPorNome = async (req: Request, res: Response) => {
-    try {
-        const nomeBusca = req.params.nome;
 
-        if (!nomeBusca) {
-            res.status(400).json({ message: "O parâmetro 'nome' é obrigatório" });
-            return;
-        }
-
-        const produtos = await prisma.produto.findMany({
-            where: {
-                nome: {
-                    contains: nomeBusca, 
-                }
-            }
-        });
-        if (produtos.length > 0) {
-            res.status(200).json(produtos);
-        } else {
-            res.status(404).json({ "message": "Produto não encontrado" });
-        }
-    } catch (error) {
-        res.status(500).json({ error: "Erro do servidor"});
-    }
-}
 
 export const atualizarProduto = async (req: Request, res: Response) => {
     try {
