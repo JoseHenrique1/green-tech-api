@@ -60,7 +60,8 @@ model Avaliacao {
   agricultor       Agricultor     @relation(fields: [idAgricultor], references: [id])
   idAgricultor     String 
   estabelecimento   Estabelecimento @relation(fields: [idEstabelecimento], references: [id])
-  idEstabelecimento String 
+  idEstabelecimento String
+  nota Int 
 
   @@id([idAgricultor, idEstabelecimento])
 }
