@@ -29,6 +29,7 @@ model Agricultor {
   longitude    String
   tiposCultivo String
   produtos     Produto[]
+  encomenda Encomenda[]
 }
 
 model Estabelecimento {
@@ -40,6 +41,7 @@ model Estabelecimento {
   senha        String
   latitude     String
   longitude    String
+  encomenda Encomenda[]
 }
 
 model Produto {
@@ -52,4 +54,18 @@ model Produto {
   quantidade       Int
   agricultorId     String
   agricultor       Agricultor @relation(fields: [agricultorId], references: [id]) 
+}
+
+model Encomenda {
+  id                String   @id @default(uuid())
+  nome              String
+  quantidade        Int
+  preco             Float
+  status            String   @default("Pendente")
+  agricultorId      String?
+  agricultor        Agricultor? @relation(fields: [agricultorId], references: [id])
+  estabelecimentoId String
+  estabelecimento   Estabelecimento @relation(fields: [estabelecimentoId], references: [id])
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
