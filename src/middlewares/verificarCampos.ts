@@ -1,29 +1,31 @@
 import { Request, Response, NextFunction } from 'express';
+import { validarEmail } from '../utils/validarEmail.ts';
+import { validarTelefone } from '../utils/validarTelefone.ts';
 
-export function verificarCamposEstabelecimento(req: Request, res: Response, next: NextFunction) {
-    const { email, telefone, nome, senha, latitude, longitude } = req.body;
+function verificarCamposObrigatorios(req: Request, res: Response, next: NextFunction, isUpdate = false) {
+    const { email, telefone, nome, senha, latitude, longitude, cpf } = req.body;
 
-    if (!nome || !email || !telefone || !senha || !latitude || !longitude) {
-        res.status(400).json({
-            error: "Campos obrigatórios estão faltando ou estão vazios.",    
-        });
-        return;
+    if (!nome || !email || !telefone || !latitude || !longitude || (!isUpdate && !senha) || (!isUpdate && !cpf)) {
+        return res.status(400).json({ error: "Campos obrigatórios estão faltando ou estão vazios." });
+    }
+
+    if (!validarEmail(email)) {
+        return res.status(400).json({ error: "E-mail inválido." });
+    }
+
+    if (!validarTelefone(telefone)) {
+        return res.status(400).json({ error: "Telefone inválido. Use o formato (XX) XXXXX-XXXX." });
     }
 
     next();
 }
 
+export function verificarCamposEstabelecimento(req: Request, res: Response, next: NextFunction) {
+    verificarCamposObrigatorios(req, res, next);
+}
+
 export function verificarCamposEstabelecimentoAtualizacao(req: Request, res: Response, next: NextFunction) {
-    const { email, telefone, nome, latitude, longitude } = req.body;
-
-    if (!nome || !email || !telefone || !latitude || !longitude) {
-        res.status(400).json({
-            error: "Campos obrigatórios estão faltando ou estão vazios.",    
-        });
-        return;
-    }
-
-    next();
+    verificarCamposObrigatorios(req, res, next, true);
 }
 
 export function verificarCamposProduto(req: Request, res: Response, next: NextFunction) {
