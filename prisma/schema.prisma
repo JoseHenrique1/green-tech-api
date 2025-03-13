@@ -29,7 +29,6 @@ model Agricultor {
   longitude    String
   tiposCultivo String
   produtos     Produto[]
-  encomenda Encomenda[]
   avaliacoes Avaliacao[]
 }
 
@@ -76,8 +75,6 @@ model Encomenda {
   quantidade        Int
   preco             Float
   status            String   @default("Pendente")
-  agricultorId      String?
-  agricultor        Agricultor? @relation(fields: [agricultorId], references: [id])
   estabelecimentoId String
   estabelecimento   Estabelecimento @relation(fields: [estabelecimentoId], references: [id])
   createdAt         DateTime @default(now())
