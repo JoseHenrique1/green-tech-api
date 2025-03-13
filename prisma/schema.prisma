@@ -30,6 +30,7 @@ model Agricultor {
   tiposCultivo String
   produtos     Produto[]
   encomenda Encomenda[]
+  avaliacoes Avaliacao[]
 }
 
 model Estabelecimento {
@@ -42,6 +43,7 @@ model Estabelecimento {
   latitude     String
   longitude    String
   encomenda Encomenda[]
+  avaliacoes Avaliacao[]
 }
 
 model Produto {
@@ -55,6 +57,18 @@ model Produto {
   agricultorId     String
   agricultor       Agricultor @relation(fields: [agricultorId], references: [id]) 
 }
+
+model Avaliacao {
+  id               String    @default(uuid())
+  agricultor       Agricultor     @relation(fields: [idAgricultor], references: [id])
+  idAgricultor     String 
+  estabelecimento   Estabelecimento @relation(fields: [idEstabelecimento], references: [id])
+  idEstabelecimento String
+  nota Int 
+
+  @@id([id, idAgricultor, idEstabelecimento])
+}
+
 
 model Encomenda {
   id                String   @id @default(uuid())
