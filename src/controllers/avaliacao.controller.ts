@@ -8,7 +8,8 @@ export const criarAvaliacao = async (req: Request, res: Response) => {
     const { idAgricultor, nota } = req.body;
 
     if (!idAgricultor || typeof nota !== "number") {
-      return res.status(400).json({ error: "Campos obrigatórios ausentes ou inválidos." });
+      res.status(400).json({ error: "Campos obrigatórios ausentes ou inválidos." });
+      return;
     }
 
     const avaliacao = await prisma.avaliacao.create({
@@ -19,9 +20,11 @@ export const criarAvaliacao = async (req: Request, res: Response) => {
       },
     });
 
-    return res.status(201).json(avaliacao);
+    res.status(201).json(avaliacao);
+    return;
   } catch (error) {
-    return res.status(500).json({ error: "Erro ao criar avaliação." });
+    res.status(500).json({ error: "Erro ao criar avaliação." });
+    return;
   }
 };
 
@@ -35,9 +38,11 @@ export const listarAvaliacoesPorAgricultor = async (req: Request, res: Response)
       include: { estabelecimento: true },
     });
 
-    return res.json(avaliacoes);
+    res.status(200).json(avaliacoes);
+    return;
   } catch (error) {
-    return res.status(500).json({ error: "Erro ao listar avaliações do agricultor." });
+    res.status(500).json({ error: "Erro ao listar avaliações do agricultor." });
+    return;
   }
 };
 
@@ -51,9 +56,11 @@ export const listarAvaliacoesPorEstabelecimento = async (req: Request, res: Resp
       include: { agricultor: true },
     });
 
-    return res.json(avaliacoes);
+    res.status(200).json(avaliacoes);
+    return;
   } catch (error) {
-    return res.status(500).json({ error: "Erro ao listar avaliações do estabelecimento." });
+    res.status(500).json({ error: "Erro ao listar avaliações do estabelecimento." });
+    return;
   }
 };
 
@@ -66,8 +73,10 @@ export const excluirAvaliacao = async (req: Request, res: Response) => {
       where: { id: idAvaliacao },
     });
 
-    return res.status(204).send();
+    res.status(204).send();
+    return;
   } catch (error) {
-    return res.status(500).json({ error: "Erro ao excluir avaliação." });
+    res.status(500).json({ error: "Erro ao excluir avaliação." });
+    return;
   }
 };

@@ -5,6 +5,6 @@ import { autenticacao } from "../middlewares/autenticacao.ts";
 export const avaliacaoRouter = Router();
 
 avaliacaoRouter.post("/estabelecimento/:idEstabelecimento/avaliacoes", autenticacao, criarAvaliacao);
-avaliacaoRouter.get("/agricultores/:idAgricultor/avaliacoes", listarAvaliacoesPorAgricultor);
-avaliacaoRouter.get("/estabelecimento/:idEstabelecimento/avaliacoes", listarAvaliacoesPorEstabelecimento);
+avaliacaoRouter.get("/agricultores/:idAgricultor/avaliacoes", autenticacao, listarAvaliacoesPorAgricultor);
+avaliacaoRouter.get("/estabelecimento/:idEstabelecimento/avaliacoes", autenticacao,listarAvaliacoesPorEstabelecimento);
 avaliacaoRouter.delete("/estabelecimento/:idEstabelecimento/avaliacoes/:idAvaliacao", autenticacao, excluirAvaliacao);
