@@ -40,3 +40,29 @@ export function verificarCamposProduto(req: Request, res: Response, next: NextFu
 
     next();
 }
+
+export function verificarCamposEncomenda(req: Request, res: Response, next: NextFunction) {
+    const { nome, quantidade, preco, estabelecimentoId } = req.body;
+
+    if (!nome || !quantidade || !preco || !estabelecimentoId) {
+        res.status(400).json({ error: "Campos obrigatórios estão faltando ou estão vazios." });
+        return;
+    }
+
+    if (typeof nome !== 'string' || nome.trim().length === 0) {
+        res.status(400).json({ error: "Nome inválido." });
+        return;
+    }
+
+    if (typeof preco !== 'number' || preco <= 0) {
+        res.status(400).json({ error: "Preço deve ser um número positivo." });
+        return;
+    }
+
+    if (typeof quantidade !== 'number' || quantidade <= 0) {
+        res.status(400).json({ error: "Quantidade deve ser um número positivo." });
+        return;
+    }
+
+    next();
+}
