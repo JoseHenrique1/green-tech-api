@@ -77,9 +77,37 @@ export const deletarEncomenda = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 
+        // não pode deletar a encomenda se o status for aceito
+        const encomenda = await prisma.encomenda.findUnique({ where: { id } });
+        if (encomenda && encomenda.status === "aceito") {
+            res.status(400).json({ error: "Não é possível deletar uma encomenda com status 'aceito'." });
+            return;
+        }
+
         await prisma.encomenda.delete({ where: { id } });
 
         res.status(200).json({ "message": "Encomenda deletada com sucesso!" });
+        return;
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erro do servidor" });
+        return;
+    }
+}
+
+export const statusEncomenda = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        const encomendaAtualizada = await prisma.encomenda.update({
+            where: { id },
+            data: {
+                status,
+            },
+        });
+
+        res.status(200).json({ "message": "Status da encomenda atualizado com sucesso!", encomendaAtualizada });
         return;
     } catch (error) {
         console.error(error);
