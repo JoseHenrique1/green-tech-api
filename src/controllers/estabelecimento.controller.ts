@@ -33,8 +33,12 @@ export const consultarEstabelecimentos = async (req: Request, res: Response) => 
 
 
         if (estabelecimentos) {
-            const estabelecimentoSemSenha = estabelecimentos.map(estabelecimento=>({...estabelecimento, senha: undefined}))
-            res.status(200).json(estabelecimentos);
+            const estabelecimentoSemSenha = estabelecimentos.map(estabelecimento=>({
+                ...estabelecimento, 
+                senha: undefined,
+                imagem: estabelecimento.imagem ? ("http://localhost:3000"+estabelecimento.imagem) : estabelecimento.imagem
+            }))
+            res.status(200).json({estabelecimentos: estabelecimentoSemSenha});
         } else {
             res.status(404).json({ "message": "Sem estabelecimentos cadastrados!" });
         }

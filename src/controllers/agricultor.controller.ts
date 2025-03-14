@@ -70,7 +70,10 @@ export const consultarAgricultorPorEmail = async (req: Request, res: Response) =
       return;
     }
 
-    res.status(200).json({agricultor: {...agricultor, senha:undefined}});
+    res.status(200).json({agricultor: {
+        ...agricultor, 
+        imagem: agricultor.imagem ? ("http://localhost:3000"+agricultor.imagem) : agricultor.imagem,
+        senha:undefined}});
     return;
   } catch (error) {
     console.error("Erro ao consultar agricultor por email:", error);
