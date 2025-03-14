@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { cadastrarProduto, atualizarProduto, listarProdutoPorId,
-     listarProdutos, deletarProduto, uploadImagemProduto } from '../controllers/produto.controller.js';
-import { verificarCamposProduto, verificarParametroId } from '../middlewares/verificarCampos.js';
+     listarProdutos, deletarProduto, uploadImagemProduto } from '../controllers/produto.controller.ts';
+import { verificarCamposProduto, verificarParametroId } from '../middlewares/verificarCampos.ts';
 import { autenticacao } from "../middlewares/autenticacao.ts";
 import { upload } from '../middlewares/multerConfig.ts';
 export const produtoRouter = Router();

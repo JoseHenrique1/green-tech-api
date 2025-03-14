@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { autenticacaoRouter } from "./autenticacao.router.ts";
-import { agricultorRouter } from "./agricultor.router.js";
-import { estabelecimentoRouter } from "./estabelecimento.router.js";
-import { produtoRouter } from "./produto.router.js";
+import { agricultorRouter } from "./agricultor.router.ts";
+import { estabelecimentoRouter } from "./estabelecimento.router.ts";
+import { produtoRouter } from "./produto.router.ts";
 import { avaliacaoRouter } from "./avaliacao.router.ts";
-import { encomendaRouter } from "./encomenda.router.js";
+import { encomendaRouter } from "./encomenda.router.ts";
 import { interesseRouter } from "./interesse.router.ts";
+import { colheitaRouter } from "./colheita.router.ts";
 
 export const router = Router();
 
@@ -16,4 +17,5 @@ router.use("/produto", produtoRouter);
 router.use("/interesse", interesseRouter);
 router.use("/", avaliacaoRouter);
 router.use("/encomenda", encomendaRouter);
+router.use("/colheita", colheitaRouter);
 
