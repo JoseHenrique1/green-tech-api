@@ -48,3 +48,42 @@ export const criarEncomenda = async (req: Request, res: Response, next: NextFunc
         return;
     }
 };
+
+export const atualizarEncomenda = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { nome, quantidade, preco, estabelecimentoId } = req.body;
+
+        const encomendaAtualizada = await prisma.encomenda.update({
+            where: { id },
+            data: {
+                nome,
+                quantidade,
+                preco,
+                estabelecimentoId,
+            },
+        });
+
+        res.status(200).json({ "message": "Encomenda atualizada com sucesso!", encomendaAtualizada });
+        return;
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erro do servidor" });
+        return;
+    }
+}
+
+export const deletarEncomenda = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        await prisma.encomenda.delete({ where: { id } });
+
+        res.status(200).json({ "message": "Encomenda deletada com sucesso!" });
+        return;
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erro do servidor" });
+        return;
+    }
+}
