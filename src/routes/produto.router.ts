@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { cadastrarProduto, atualizarProduto, listarProdutoPorId,
      listarProdutos, deletarProduto, uploadImagemProduto } from '../controllers/produto.controller.js';
-import { verificarCamposProduto } from '../middlewares/verificarCampos.js';
+import { verificarCamposProduto, verificarParametroId } from '../middlewares/verificarCampos.js';
 import { autenticacao } from "../middlewares/autenticacao.ts";
 import { upload } from '../middlewares/multerConfig.ts';
 export const produtoRouter = Router();
@@ -9,8 +9,8 @@ export const produtoRouter = Router();
 // falta middleware da autenticação
 
 produtoRouter.post('/', autenticacao, verificarCamposProduto, cadastrarProduto);
-produtoRouter.get('/:id', autenticacao, listarProdutoPorId);
-produtoRouter.get('/', autenticacao,  listarProdutos);
-produtoRouter.put('/:id', autenticacao, atualizarProduto);
-produtoRouter.delete('/:id', autenticacao, deletarProduto);
+produtoRouter.get('/:id', autenticacao, verificarParametroId, listarProdutoPorId);
+produtoRouter.get('/', autenticacao, listarProdutos);
+produtoRouter.put('/:id', autenticacao, verificarParametroId,  atualizarProduto);
+produtoRouter.delete('/:id', autenticacao, verificarParametroId, deletarProduto);
 produtoRouter.patch("/:id/imagem", autenticacao, upload.single("imagem"), uploadImagemProduto);

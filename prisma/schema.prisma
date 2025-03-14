@@ -43,6 +43,7 @@ model Estabelecimento {
   longitude    String
   encomenda Encomenda[]
   avaliacoes Avaliacao[]
+  interesses Interesse[]
 }
 
 model Produto {
@@ -55,6 +56,7 @@ model Produto {
   quantidade       Int
   agricultorId     String
   agricultor       Agricultor @relation(fields: [agricultorId], references: [id]) 
+  interesses Interesse[]
 }
 
 model Avaliacao {
@@ -68,6 +70,15 @@ model Avaliacao {
   @@unique([id, idAgricultor, idEstabelecimento])
 }
 
+model Interesse {
+  id                String          @id  @default(uuid())
+  produto           Produto         @relation(fields: [idProduto], references: [id])
+  idProduto         String 
+  estabelecimento   Estabelecimento @relation(fields: [idEstabelecimento], references: [id])
+  idEstabelecimento String
+
+  @@unique([id, idProduto, idEstabelecimento])
+}
 
 model Encomenda {
   id                String   @id @default(uuid())
@@ -80,3 +91,4 @@ model Encomenda {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }
+
