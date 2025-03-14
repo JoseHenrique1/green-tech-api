@@ -30,6 +30,7 @@ model Agricultor {
   tiposCultivo String
   produtos     Produto[]
   avaliacoes Avaliacao[]
+  colheita Colheita[]
 }
 
 model Estabelecimento {
@@ -88,7 +89,16 @@ model Encomenda {
   status            String   @default("Pendente")
   estabelecimentoId String
   estabelecimento   Estabelecimento @relation(fields: [estabelecimentoId], references: [id])
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
 }
 
+model Colheita {
+  id                  String   @id @default(uuid())
+  nomeCultura         String
+  dataPlantio        DateTime
+  dataPrevistaColheita DateTime
+  latitude           Float
+  longitude          Float
+  quantidadePrevista Int
+  agricultorId       String
+  agricultor         Agricultor @relation(fields: [agricultorId], references: [id])
+}
