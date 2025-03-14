@@ -11,10 +11,12 @@ export const signin = async (req: Request, res: Response) => {
 
     if (!email || !senha || !tipo) {
       res.status(400).json({ message: "Email, senha e tipo são obrigatórios." });
+      return;
     }
 
     if (!["agricultor", "estabelecimento"].includes(tipo)) {
       res.status(400).json({ message: "Tipo inválido. Escolha entre 'agricultor' ou 'estabelecimento'." });
+      return;
     }
   
     const usuario = tipo === "agricultor"
@@ -23,11 +25,13 @@ export const signin = async (req: Request, res: Response) => {
 
     if (!usuario) {
       res.status(404).json({ message: "Usuário não encontrado." });
+      return;
     }
 
     const senhaValida = await bcrypt.compare(senha, usuario.senha);
     if (!senhaValida) {
       res.status(401).json({ message: "Credenciais inválidas." });
+      return;
     }
 
     const token = jwt.sign(
@@ -49,5 +53,6 @@ export const signin = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Erro no login:", error);
     res.status(500).json({ message: "Erro interno no servidor." });
+    return;
   }
 };

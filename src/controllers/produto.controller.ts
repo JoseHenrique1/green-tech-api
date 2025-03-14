@@ -5,6 +5,8 @@ import path from "path";
 export const cadastrarProduto = async (req: Request, res: Response) => {
     try {
         const { nome, preco, disponibilidade, certificacoes, quantidade, agricultorId } = req.body;
+        console.log(req.body);
+        
 
         const novoProduto = await prisma.produto.create({
             data: {
@@ -18,6 +20,8 @@ export const cadastrarProduto = async (req: Request, res: Response) => {
         });
         res.status(201).json({ "message": "Produto cadastrado com sucesso!", novoProduto });
     } catch (error) {
+        console.log(error);
+        
         res.status(500).json({ error: "Erro do servidor" });
     }
 }
