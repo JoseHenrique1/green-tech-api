@@ -17,7 +17,7 @@ export const cadastrarEstabelecimento = async (req: Request, res: Response) => {
                 longitude 
             },
         });
-        res.status(201).json({ "message": "Estabelecimento cadastrado com sucesso!", novoEstalecimento});
+        res.status(201).json({ "message": "Estabelecimento cadastrado com sucesso!", estabelecimento: {...novoEstalecimento, senha:undefined}});
     } catch (error) {
         res.status(500).json({ error: "Erro do servidor"});
     }
@@ -31,7 +31,9 @@ export const consultarEstabelecimentos = async (req: Request, res: Response) => 
 
         const estabelecimentos = await prisma.estabelecimento.findMany({ where: whereClause });
 
+
         if (estabelecimentos) {
+            const estabelecimentoSemSenha = estabelecimentos.map(estabelecimento=>({...estabelecimento, senha: undefined}))
             res.status(200).json(estabelecimentos);
         } else {
             res.status(404).json({ "message": "Sem estabelecimentos cadastrados!" });
@@ -49,7 +51,7 @@ export const consultarEstabelecimentoPorId = async (req: Request, res: Response)
             }
         });
         if (estabelecimento) {
-            res.status(200).json(estabelecimento);
+            res.status(200).json({estabelecimento: {...estabelecimento, senha:undefined}});
         } else {
             res.status(404).json({ "message": "estabelecimento não encontrado!" });
         }
@@ -75,7 +77,7 @@ export const atualizarEstabelecimento = async (req: Request, res: Response) => {
                 longitude 
             },
         });
-        res.status(201).json({ "message": "Estabelecimento atualizado com sucesso!", estalecimentoAtualizado});
+        res.status(201).json({ "message": "Estabelecimento atualizado com sucesso!", estabelecimento: {...estalecimentoAtualizado, senha:undefined}});
     } catch (error) {
         res.status(500).json({ error: "Erro do servidor"});
     }

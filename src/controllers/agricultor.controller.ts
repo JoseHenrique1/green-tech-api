@@ -38,7 +38,10 @@ import path from "path";
       },
     });
 
-    res.status(201).json({ msg: "Agricultor cadastrado com sucesso", agricultor });
+    
+
+
+    res.status(201).json({ msg: "Agricultor cadastrado com sucesso", agricultor: {...agricultor, senha:undefined} });
     return;
   } catch (error) {
     console.error(error);
@@ -67,7 +70,7 @@ export const consultarAgricultorPorEmail = async (req: Request, res: Response) =
       return;
     }
 
-    res.status(200).json(agricultor);
+    res.status(200).json({agricultor: {...agricultor, senha:undefined}});
     return;
   } catch (error) {
     console.error("Erro ao consultar agricultor por email:", error);
@@ -101,7 +104,7 @@ export const atualizarAgricultor = async (req: Request, res: Response) => {
       }
     });
 
-    res.status(200).json(agricultorAtualizado);
+    res.status(200).json({agricultor: {...agricultorAtualizado, senha:undefined}});
     return;
   } catch (error) {
     console.error("Erro ao atualizar agricultor:", error);
