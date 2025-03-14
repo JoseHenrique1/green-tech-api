@@ -1,11 +1,12 @@
 import { Router } from 'express';
-import { criarEncomenda, buscarEncomendas, atualizarEncomenda } from '../controllers/encomenda.controller.ts';
+import { criarEncomenda, buscarEncomendas, atualizarEncomenda, deletarEncomenda } from '../controllers/encomenda.controller.ts';
 import { verificarCamposEncomenda } from '../middlewares/verificarCampos.ts';
 import { autenticacao } from "../middlewares/autenticacao.ts";
 
 export const encomendaRouter = Router();
 
-encomendaRouter.post('/', verificarCamposEncomenda, criarEncomenda);
-encomendaRouter.get('/', buscarEncomendas);
-encomendaRouter.put('/:id', atualizarEncomenda);
+encomendaRouter.post('/', autenticacao, verificarCamposEncomenda, criarEncomenda);
+encomendaRouter.get('/', autenticacao, buscarEncomendas);
+encomendaRouter.put('/:id', autenticacao, atualizarEncomenda);
+encomendaRouter.delete('/:id', autenticacao, deletarEncomenda);
 
