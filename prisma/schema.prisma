@@ -10,10 +10,95 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id    String     @id @default(uuid())
-  email String  @unique
-  name  String
+  id       String @id @default(uuid())
+  email    String @unique
+  name     String
   password String
+}
+
+model Agricultor {
+  id           String   @id @default(uuid())
+  imagem       String?
+  nome         String
+  email        String   @unique
+  telefone     String   @unique
+  senha        String
+  tamanho      Float
+  latitude     String
+  longitude    String
+  tiposCultivo String
+  produtos     Produto[]
+  avaliacoes Avaliacao[]
+  colheita Colheita[]
+}
+
+model Estabelecimento {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  telefone     String   @unique
+  imagem       String?
+  nome         String
+  senha        String
+  latitude     String
+  longitude    String
+  encomenda Encomenda[]
+  avaliacoes Avaliacao[]
+  interesses Interesse[]
+}
+
+model Produto {
+  id               String   @id @default(uuid())
+  imagem           String?
+  nome             String
+  preco            Float
+  disponibilidade  String
+  certificacoes    String
+  quantidade       Int
+  agricultorId     String
+  agricultor       Agricultor @relation(fields: [agricultorId], references: [id]) 
+  interesses Interesse[]
+}
+
+model Avaliacao {
+  id               String  @id  @default(uuid())
+  agricultor       Agricultor     @relation(fields: [idAgricultor], references: [id])
+  idAgricultor     String 
+  estabelecimento   Estabelecimento @relation(fields: [idEstabelecimento], references: [id])
+  idEstabelecimento String
+  nota Int 
+
+  @@unique([id, idAgricultor, idEstabelecimento])
+}
+
+model Interesse {
+  id                String          @id  @default(uuid())
+  produto           Produto         @relation(fields: [idProduto], references: [id])
+  idProduto         String 
+  estabelecimento   Estabelecimento @relation(fields: [idEstabelecimento], references: [id])
+  idEstabelecimento String
+
+  @@unique([id, idProduto, idEstabelecimento])
+}
+
+model Encomenda {
+  id                String   @id @default(uuid())
+  nome              String
+  quantidade        Int
+  preco             Float
+  status            String   @default("Pendente")
+  estabelecimentoId String
+  estabelecimento   Estabelecimento @relation(fields: [estabelecimentoId], references: [id])
+}
+
+model Colheita {
+  id                  String   @id @default(uuid())
+  nomeCultura         String
+  dataPlantio        DateTime
+  dataPrevistaColheita DateTime
+  latitude           Float
+  longitude          Float
+  quantidadePrevista Int
+  agricultorId       String
+  agricultor         Agricultor @relation(fields: [agricultorId], references: [id])
 }

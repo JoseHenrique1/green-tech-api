@@ -1,9 +1,11 @@
-import express from "express"
+import express from "express";
+import { router } from "./routes/index.js";
+import cors from "cors";
 
-const app = express()
+const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello World")
-})
+app.use(express.json());
+app.use(cors());
+app.use("/", router);
 
-app.listen(3000, () => console.log("Server running on port 3000"))
+app.listen(3000, () => console.log("Server running on port 3000"));
